@@ -2,7 +2,7 @@
 Auto Claim TABIZOO
 
 <center>
-<img src="image.png" width="400px" height="300px">
+<img src="image.png" >
 </center>
 
 # Table of Contents
@@ -61,6 +61,6 @@ Start bot : [HERE](https://t.me/tabizoobot/tabizoo?startapp=brK5j)
    3. Press `F12` on your keyboard to open devtool and go to `Network` then filter `Sign-in` after that copy `rawdata`
 
 <center>
-<img src="getdata.png" width="400px" height="300px">
+<img src="getdata.png" >
 </center>
     
