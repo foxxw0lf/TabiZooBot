@@ -291,13 +291,16 @@ def main():
                 
                 # Adding delay between account switches
                 delay_seconds = 30  # Set the initial delay time
-                print(f'{biru}[{get_timestamp()}] {hijau}Waiting for {delay_seconds} seconds before switching to the next account...{hijau}')
+                print(f'{biru}[{get_timestamp()}] {kuning}Waiting for {delay_seconds} seconds before switching to the next account...{kuning}')
                 time.sleep(delay_seconds)
-        
-        # Check if it's the last account
-        if index == num_accounts:
-            print(f'{biru}[{get_timestamp()}] {merah}Reached maximum number of accounts. Exiting program...{merah}')
-            sys.exit()
 
+                # Adding delay between account switches
+                delay_seconds = 3600 # Set the initial delay time
+                print(f'{biru}[{get_timestamp()}] {kuning}Sleep {delay_seconds} seconds before claim again...{kuning}')
+                time.sleep(delay_seconds)
+
+                login_with_retry(headers, index)
+        
+        
 if __name__ == "__main__":
     main()
