@@ -1,0 +1,6 @@
+requests
+colorama==0.4.4
+pytz
+keyboard==0.13.5
+requests==2.26.0
+tzlocal==4.0.0
