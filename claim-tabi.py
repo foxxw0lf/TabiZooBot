@@ -259,48 +259,48 @@ def main():
     keyboard_thread.daemon = True
     keyboard_thread.start()
     
-    # Read accounts from data.txt
-    accounts = read_data_file()
-    num_accounts = len(accounts)
-    
-    for index, account_data in enumerate(accounts, start=1):
-        print(f'{biru}[{get_timestamp()}] {hijau}Total Accounts in data.txt: {num_accounts}{hijau}')
-        print(f'{biru}[{get_timestamp()}] {hijau}Processing Account Index: {index}/{num_accounts}{hijau}')
-        headers['rawdata'] = account_data  # Update headers with account data
-        if login_with_retry(headers, index):  # Pass index to login_with_retry function
-            print(f'{Fore.BLUE}[{get_timestamp()}] Starting TabiZoo check-in process...')
-            check_in(headers)
-            info_data = fetch_info(headers)
-            if info_data:
-                rate = info_data.get('rate', 0)
-                referral_rate = info_data.get('referralRate', 0)
-                current = info_data.get('current', 0)
-                top_limit = info_data.get('topLimit', 0)
-                accumulated = info_data.get('accumulated', 0)
-                nextClaimTimeInSecond = info_data.get('nextClaimTimeInSecond', 0)
-                refreshTime = convert_utc_to_local(info_data.get('refreshTime'))
-                nextClaimTime = convert_utc_to_local(info_data.get('nextClaimTime'))
+    while True:
+        # Read accounts from data.txt
+        accounts = read_data_file()
+        num_accounts = len(accounts)
+        
+        for index, account_data in enumerate(accounts, start=1):
+            print(f'{biru}[{get_timestamp()}] {hijau}Total Accounts in data.txt: {num_accounts}{hijau}')
+            print(f'{biru}[{get_timestamp()}] {hijau}Processing Account Index: {index}/{num_accounts}{hijau}')
+            headers['rawdata'] = account_data  # Update headers with account data
+            
+            if login_with_retry(headers, index):  # Pass index to login_with_retry function
+                print(f'{Fore.BLUE}[{get_timestamp()}] Starting TabiZoo check-in process...')
+                check_in(headers)
+                info_data = fetch_info(headers)
+                if info_data:
+                    rate = info_data.get('rate', 0)
+                    referral_rate = info_data.get('referralRate', 0)
+                    current = info_data.get('current', 0)
+                    top_limit = info_data.get('topLimit', 0)
+                    accumulated = info_data.get('accumulated', 0)
+                    nextClaimTimeInSecond = info_data.get('nextClaimTimeInSecond', 0)
+                    refreshTime = convert_utc_to_local(info_data.get('refreshTime'))
+                    nextClaimTime = convert_utc_to_local(info_data.get('nextClaimTime'))
 
-                print(f'{biru}[{get_timestamp()}] {hijau}CURRENT BALANCE: {current}{hijau}')
-                print(f'{biru}[{get_timestamp()}] {putih}REFRESH TIME: {refreshTime}{putih}')
-                print(f'{biru}[{get_timestamp()}] {putih}NEXT CLAIM: {nextClaimTime}{putih}')
-                print(f'{biru}[{get_timestamp()}] {hijau}NEXT CLAIM IN SECOND: {nextClaimTimeInSecond}{hijau}')
-                
-                print(f'{Fore.BLUE}[{get_timestamp()}] Starting TabiZoo claim process...')
-                claim_rewards(headers)
+                    print(f'{biru}[{get_timestamp()}] {hijau}CURRENT BALANCE: {current}{hijau}')
+                    print(f'{biru}[{get_timestamp()}] {putih}REFRESH TIME: {refreshTime}{putih}')
+                    print(f'{biru}[{get_timestamp()}] {putih}NEXT CLAIM: {nextClaimTime}{putih}')
+                    print(f'{biru}[{get_timestamp()}] {hijau}NEXT CLAIM IN SECOND: {nextClaimTimeInSecond}{hijau}')
+                    
+                    print(f'{Fore.BLUE}[{get_timestamp()}] Starting TabiZoo claim process...')
+                    claim_rewards(headers)
                 
                 # Adding delay between account switches
                 delay_seconds = 30  # Set the initial delay time
                 print(f'{biru}[{get_timestamp()}] {kuning}Waiting for {delay_seconds} seconds before switching to the next account...{kuning}')
                 time.sleep(delay_seconds)
 
-                # Adding delay between account switches
-                delay_seconds = 3600 # Set the initial delay time
-                print(f'{biru}[{get_timestamp()}] {kuning}Sleep {delay_seconds} seconds before claim again...{kuning}')
-                time.sleep(delay_seconds)
+        # Adding delay between full account cycles
+        delay_seconds = 3600  # Set the initial delay time
+        print(f'{biru}[{get_timestamp()}] {kuning}All accounts processed. Sleeping for {delay_seconds} seconds before starting the next claim...{kuning}')
+        time.sleep(delay_seconds)
+   
 
-                login_with_retry(headers, index)
-        
-        
 if __name__ == "__main__":
     main()
